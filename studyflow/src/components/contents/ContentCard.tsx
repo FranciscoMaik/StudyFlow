@@ -100,8 +100,8 @@ export function ContentCard({
 				</div>
 			</div>
 
-			<div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
-				<div className="flex items-center gap-2">
+			<div className="mt-5 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
+				<div className="flex flex-wrap items-center gap-2">
 					<span
 						className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md ${PRIORITY_COLORS[content.priority]}`}
 					>
