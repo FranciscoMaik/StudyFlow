@@ -1,11 +1,19 @@
-import type { Session } from "../../types";
 import { motion } from "framer-motion";
-import { CheckCircle2, CircleDashed, FastForward, Clock } from "lucide-react";
+import {
+	CheckCircle2,
+	CircleDashed,
+	Clock,
+	FastForward,
+	Pause,
+	Play,
+} from "lucide-react";
+import { useSessionTimer } from "../../hooks/useSessionTimer";
+import type { Session } from "../../types";
 
 interface SessionCardProps {
 	session: Session;
 	contentTitle: string;
-	onComplete: (id: string) => void;
+	onComplete: (id: string, elapsedSeconds?: number) => void;
 	onSkip: (id: string) => void;
 }
 
@@ -33,16 +41,29 @@ export function SessionCard({
 	const isSkipped = status === "skipped";
 	const isPending = status === "pending";
 
+	const {
+		formattedTime,
+		isRunning,
+		handlePlay,
+		handlePause,
+		handleComplete,
+		handleSkip,
+	} = useSessionTimer(id, onComplete, onSkip);
+
 	return (
-		<motion.div 
+		<motion.div
 			layout
 			initial={{ opacity: 0, scale: 0.95 }}
 			animate={{ opacity: 1, scale: 1 }}
 			whileHover={isPending ? { y: -2, scale: 1.01 } : {}}
 			className={`flex flex-col gap-4 rounded-xl border-2 p-5 transition-colors sm:flex-row sm:items-center sm:justify-between shadow-sm relative overflow-hidden ${
-				isDone ? "bg-emerald-50/50 border-emerald-100" : 
-				isSkipped ? "bg-slate-50 border-slate-100 opacity-60" : 
-				"bg-white border-indigo-50 hover:border-indigo-200 hover:shadow-md"
+				isDone
+					? "bg-emerald-50/50 border-emerald-100"
+					: isSkipped
+						? "bg-slate-50 border-slate-100 opacity-60"
+						: isRunning
+							? "bg-white border-indigo-400 timer-running"
+							: "bg-white border-indigo-50 hover:border-indigo-200 hover:shadow-md"
 			}`}
 		>
 			{/* Left: content info */}
@@ -53,13 +74,21 @@ export function SessionCard({
 					{isPending && <CircleDashed className="w-6 h-6 text-indigo-400" />}
 				</div>
 				<div className="flex flex-col gap-1 min-w-0">
-					<h3 className={`font-bold text-lg break-all leading-tight ${isDone ? "text-emerald-900" : isSkipped ? "text-slate-500 line-through" : "text-slate-800"}`}>
+					<h3
+						className={`font-bold text-lg break-all leading-tight ${
+							isDone
+								? "text-emerald-900"
+								: isSkipped
+									? "text-slate-500 line-through"
+									: "text-slate-800"
+						}`}
+					>
 						{contentTitle}
 					</h3>
 					<div className="flex items-center gap-3 mt-1">
 						<span className="flex items-center gap-1 text-sm text-slate-500 font-medium">
 							<Clock className="w-3.5 h-3.5" />
-							{plannedHours}h {plannedHours !== 1 ? "" : ""}
+							{plannedHours}h
 						</span>
 						<span
 							className={`rounded-md px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider border ${STATUS_BADGE_CLASSES[status]}`}
@@ -67,18 +96,60 @@ export function SessionCard({
 							{STATUS_LABELS[status]}
 						</span>
 					</div>
+
+					{/* Elapsed time display */}
+					{isPending && (
+						<div className="flex items-center gap-2 mt-1">
+							<span
+								aria-live="polite"
+								className="text-sm font-mono font-semibold text-slate-600"
+							>
+								{formattedTime}
+							</span>
+							{isRunning && (
+								<span className="text-xs font-semibold text-indigo-600 animate-pulse">
+									Em andamento
+								</span>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
 
-			{/* Right: actions or status indicator */}
+			{/* Right: timer controls + action buttons */}
 			<div className="flex items-center gap-2 shrink-0">
 				{isPending && (
 					<>
+						{/* Play/Pause timer button */}
+						{isRunning ? (
+							<motion.button
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								type="button"
+								aria-label="Pausar cronômetro"
+								onClick={handlePause}
+								className="rounded-xl border-2 border-indigo-200 bg-indigo-50 p-2.5 text-indigo-600 transition-colors hover:bg-indigo-100"
+							>
+								<Pause className="w-4 h-4" />
+							</motion.button>
+						) : (
+							<motion.button
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								type="button"
+								aria-label="Iniciar cronômetro"
+								onClick={handlePlay}
+								className="rounded-xl border-2 border-indigo-200 bg-indigo-50 p-2.5 text-indigo-600 transition-colors hover:bg-indigo-100"
+							>
+								<Play className="w-4 h-4" />
+							</motion.button>
+						)}
+
 						<motion.button
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							type="button"
-							onClick={() => onComplete(id)}
+							onClick={handleComplete}
 							className="rounded-xl bg-emerald-500 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-emerald-600 focus:ring-4 focus:ring-emerald-500/20"
 						>
 							Feito! +10XP
@@ -87,7 +158,7 @@ export function SessionCard({
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							type="button"
-							onClick={() => onSkip(id)}
+							onClick={handleSkip}
 							className="rounded-xl border-2 border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700"
 						>
 							Pular

@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+import { CalendarDays, Flag } from "lucide-react";
 import { useContents } from "../../hooks/useContents";
 import {
 	useCompleteSession,
@@ -6,8 +8,6 @@ import {
 } from "../../hooks/useSessions";
 import type { Session } from "../../types";
 import { SessionCard } from "./SessionCard";
-import { motion } from "framer-motion";
-import { CalendarDays, Flag } from "lucide-react";
 
 const WEEKDAY_NAMES = [
 	"Domingo",
@@ -126,7 +126,13 @@ export function WeeklyView() {
 							transition={{ duration: 1, ease: "easeOut" }}
 							className="h-full rounded-full bg-indigo-500 transition-all shadow-md relative"
 						>
-							<div className="absolute inset-0 bg-white/20" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)' }}></div>
+							<div
+								className="absolute inset-0 bg-white/20"
+								style={{
+									backgroundImage:
+										"repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)",
+								}}
+							></div>
 						</motion.div>
 					</div>
 					<p className="mt-2 text-right text-xs font-bold uppercase tracking-wider text-indigo-600">
@@ -154,11 +160,11 @@ export function WeeklyView() {
 						if (daySessions.length === 0) return null;
 
 						return (
-							<motion.div 
+							<motion.div
 								initial={{ opacity: 0, y: 10 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								key={date} 
+								key={date}
 								className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm"
 							>
 								<div className="flex items-center gap-3 mb-4">
@@ -176,7 +182,12 @@ export function WeeklyView() {
 													contentTitleMap[session.contentId] ??
 													"Missão Desconhecida"
 												}
-												onComplete={(id) => completeSession.mutate(id)}
+												onComplete={(id, elapsed) =>
+													completeSession.mutate({
+														sessionId: id,
+														elapsedSeconds: elapsed,
+													})
+												}
 												onSkip={(id) => skipSession.mutate(id)}
 											/>
 										</li>
@@ -189,7 +200,9 @@ export function WeeklyView() {
 					{sessions && sessions.length === 0 && (
 						<div className="flex flex-col items-center justify-center py-12 text-center bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
 							<div className="text-4xl mb-3">🏖️</div>
-							<p className="text-gray-500 font-medium">Nenhum estudo planejado para esta semana.</p>
+							<p className="text-gray-500 font-medium">
+								Nenhum estudo planejado para esta semana.
+							</p>
 						</div>
 					)}
 				</div>

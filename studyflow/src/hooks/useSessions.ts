@@ -115,7 +115,13 @@ export function useCompleteSession() {
 	);
 
 	return useMutation({
-		mutationFn: async (sessionId: string) => {
+		mutationFn: async ({
+			sessionId,
+			elapsedSeconds: _elapsedSeconds,
+		}: {
+			sessionId: string;
+			elapsedSeconds?: number;
+		}) => {
 			const { error } = await supabase
 				.from("sessions")
 				.update({
