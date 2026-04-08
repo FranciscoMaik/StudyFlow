@@ -1,4 +1,4 @@
--- StudyFlow: PostgreSQL Triggers for Transactional Consistency
+-- Jazim: PostgreSQL Triggers for Transactional Consistency
 -- Task 2.3 — Criar triggers PostgreSQL para consistência transacional
 -- Requirements: 6.1, 6.2, 6.3, 6.4, 8.1, 8.2, 10.1, 10.2
 

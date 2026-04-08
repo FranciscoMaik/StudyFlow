@@ -1,4 +1,4 @@
--- StudyFlow: Initial Schema Migration
+-- Jazim: Initial Schema Migration
 -- Task 2.1 — Criar migrations SQL para todas as tabelas
 
 -- Agenda semanal do usuário

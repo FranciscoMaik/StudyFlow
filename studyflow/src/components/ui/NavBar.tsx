@@ -21,7 +21,7 @@ export function NavBar() {
 			>
 				{/* Brand */}
 				<span className="font-bold text-indigo-600 text-base shrink-0">
-					StudyFlow
+					Jazim
 				</span>
 
 				{/* Links — scrollable on small viewports */}
