@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0f0e0b;
+    --ink2: #3d3d3a;
+    --ink3: #73726c;
+    --bg: #f9f7f2;
+    --bg2: #f0ede6;
+    --bg3: #e8e4db;
+    --accent: #2e5bff;
+    --accent-light: #eef1ff;
+    --green: #1a7a52;
+    --green-light: #e6f5ee;
+    --amber: #8c5a00;
+    --amber-light: #fff8e6;
+    --red: #b83232;
+    --red-light: #fef0f0;
+    --purple: #5e35b1;
+    --purple-light: #f0ecff;
+    --border: rgba(15,14,11,0.1);
+    --border-strong: rgba(15,14,11,0.2);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #f0ede6;
+      --ink2: #c2c0b6;
+      --ink3: #888780;
+      --bg: #1a1917;
+      --bg2: #242320;
+      --bg3: #2e2c29;
+      --accent: #6b8fff;
+      --accent-light: #1a2040;
+      --green: #4ade9a;
+      --green-light: #0d2e20;
+      --amber: #f0b040;
+      --amber-light: #2a1e00;
+      --red: #ff7070;
+      --red-light: #2a0f0f;
+      --purple: #b39dff;
+      --purple-light: #1e1535;
+      --border: rgba(240,237,230,0.1);
+      --border-strong: rgba(240,237,230,0.2);
+    }
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  .doc {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem 5rem;
+  }
+
+  /* Header */
+  .doc-header {
+    border-bottom: 1.5px solid var(--border-strong);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .doc-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .doc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .doc-subtitle {
+    font-size: 1.05rem;
+    color: var(--ink3);
+    font-weight: 300;
+    max-width: 600px;
+  }
+
+  .doc-meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+  }
+
+  .meta-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 3rem;
+  }
+
+  .toc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink3);
+    margin-bottom: 1rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 2rem;
+  }
+
+  .toc-list li a {
+    color: var(--ink2);
+    text-decoration: none;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    transition: color 0.15s;
+  }
+
+  .toc-list li a:hover { color: var(--accent); }
+
+  .toc-num {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink3);
+    min-width: 18px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 3.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    min-width: 24px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .section p {
+    color: var(--ink2);
+    margin-bottom: 1rem;
+  }
+
+  /* Subsection */
+  .subsection {
+    margin: 1.75rem 0;
+  }
+
+  .subsection-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Feature cards */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin: 1.25rem 0;
+  }
+
+  .feature-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .feature-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.6rem;
+    font-size: 14px;
+  }
+
+  .feature-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .feature-desc {
+    font-size: 12.5px;
+    color: var(--ink3);
+    line-height: 1.55;
+  }
+
+  /* User stories table */
+  .stories-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 1.25rem 0;
+  }
+
+  .stories-table thead th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+    border-bottom: 0.5px solid var(--border-strong);
+    background: var(--bg2);
+  }
+
+  .stories-table thead th:first-child { border-radius: 8px 0 0 0; }
+  .stories-table thead th:last-child { border-radius: 0 8px 0 0; }
+
+  .stories-table tbody tr { border-bottom: 0.5px solid var(--border); }
+  .stories-table tbody tr:last-child { border-bottom: none; }
+
+  .stories-table tbody td {
+    padding: 10px 12px;
+    vertical-align: top;
+    color: var(--ink2);
+  }
+
+  .stories-table tbody td:first-child {
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  /* Priority badge */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .badge-high { background: var(--red-light); color: var(--red); }
+  .badge-med { background: var(--amber-light); color: var(--amber); }
+  .badge-low { background: var(--green-light); color: var(--green); }
+  .badge-blue { background: var(--accent-light); color: var(--accent); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+  /* DB schema */
+  .schema-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 1.25rem 0;
+  }
+
+  .schema-table {
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .schema-table-header {
+    background: var(--accent-light);
+    padding: 8px 12px;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .schema-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .schema-field:last-child { border-bottom: none; }
+
+  .field-name {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink2);
+  }
+
+  .field-type {
+    font-size: 10.5px;
+    color: var(--ink3);
+  }
+
+  .field-pk { color: var(--amber); font-weight: 500; }
+  .field-fk { color: var(--purple); }
+
+  /* Tech stack */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin: 1.25rem 0;
+  }
+
+  .stack-item {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .stack-layer {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink3);
+  }
+
+  .stack-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .stack-detail {
+    font-size: 11.5px;
+    color: var(--ink3);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    margin: 1.5rem 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 80px;
+    top: 0;
+    bottom: 0;
+    width: 0.5px;
+    background: var(--border-strong);
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .timeline-phase {
+    min-width: 72px;
+    text-align: right;
+    padding-top: 4px;
+  }
+
+  .phase-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+    display: block;
+  }
+
+  .phase-duration {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 6px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-content {
+    flex: 1;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+
+  .timeline-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .timeline-tasks {
+    font-size: 12.5px;
+    color: var(--ink3);
+    line-height: 1.6;
+  }
+
+  /* NFR table */
+  .nfr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin: 1.25rem 0;
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .nfr-table thead th {
+    text-align: left;
+    padding: 9px 14px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink3);
+    background: var(--bg2);
+    border-bottom: 0.5px solid var(--border-strong);
+  }
+
+  .nfr-table tbody tr { border-bottom: 0.5px solid var(--border); }
+  .nfr-table tbody tr:last-child { border-bottom: none; }
+
+  .nfr-table tbody td { padding: 10px 14px; color: var(--ink2); vertical-align: top; }
+  .nfr-table tbody td:first-child { font-weight: 500; color: var(--ink); width: 140px; }
+
+  /* Risk table */
+  .risk-grid {
+    display: grid;
+    gap: 10px;
+    margin: 1.25rem 0;
+  }
+
+  .risk-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: start;
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .risk-title {
+    font-weight: 500;
+    font-size: 13.5px;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+
+  .risk-mitigation {
+    font-size: 12.5px;
+    color: var(--ink3);
+  }
+
+  /* Gamification */
+  .xp-card {
+    background: linear-gradient(135deg, var(--purple-light), var(--accent-light));
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.25rem 0;
+  }
+
+  .xp-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 1rem;
+  }
+
+  .xp-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+  }
+
+  .xp-item {
+    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .xp-item { background: rgba(255,255,255,0.05); }
+    .xp-card { background: linear-gradient(135deg, var(--purple-light), var(--accent-light)); }
+  }
+
+  .xp-action { font-size: 12.5px; color: var(--ink2); }
+  .xp-points { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--purple); }
+
+  /* Callout */
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 1.25rem 0;
+    font-size: 13.5px;
+    color: var(--ink2);
+  }
+
+  .callout strong { color: var(--accent); }
+
+  /* Divider */
+  hr { border: none; border-top: 0.5px solid var(--border); margin: 2.5rem 0; }
+
+  /* Footer */
+  .doc-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--ink3);
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- Header -->
+  <header class="doc-header">
+    <div class="doc-label">PRD — Documento de Requisitos de Produto</div>
+    <h1 class="doc-title">StudyFlow</h1>
+    <p class="doc-subtitle">Plataforma web de gerenciamento de estudos com agendamento inteligente, organização por horas e dias, e sistema de gamificação por pontuação.</p>
+    <div class="doc-meta">
+      <div class="meta-item"><span class="meta-label">Versão</span><span class="meta-value">1.0</span></div>
+      <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value"><span class="badge badge-blue">Em elaboração</span></span></div>
+      <div class="meta-item"><span class="meta-label">Data</span><span class="meta-value">Abril 2026</span></div>
+      <div class="meta-item"><span class="meta-label">Banco de dados</span><span class="meta-value">Supabase (PostgreSQL)</span></div>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Índice</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span> Visão Geral e Objetivo</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span> Público-Alvo</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span> Funcionalidades Principais</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span> Histórias de Usuário</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span> Sistema de Gamificação</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span> Modelo de Dados</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span> Stack Tecnológica</a></li>
+      <li><a href="#s8"><span class="toc-num">08</span> Requisitos Não Funcionais</a></li>
+      <li><a href="#s9"><span class="toc-num">09</span> Fluxos Principais</a></li>
+      <li><a href="#s10"><span class="toc-num">10</span> Roadmap de Desenvolvimento</a></li>
+      <li><a href="#s11"><span class="toc-num">11</span> Riscos e Mitigações</a></li>
+      <li><a href="#s12"><span class="toc-num">12</span> Critérios de Aceite</a></li>
+    </ul>
+  </div>
+
+  <!-- 1. Visão -->
+  <section class="section" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Visão Geral e Objetivo</h2>
+    </div>
+    <p>O <strong>StudyFlow</strong> é uma plataforma web que permite ao usuário cadastrar conteúdos que precisa estudar e receber um plano de estudos personalizado com base nos dias e horas disponíveis por semana. Ao concluir um conteúdo, o usuário ganha pontos e sobe de nível, criando um ciclo motivacional sustentável.</p>
+    <p>O produto resolve três problemas centrais: a dificuldade de priorizar o que estudar, a falta de estrutura temporal para cumprir metas e a ausência de recompensas que mantenham a consistência dos estudos.</p>
+
+    <div class="callout">
+      <strong>Proposição de valor:</strong> Em menos de 5 minutos, o usuário configura seus conteúdos e disponibilidade, e recebe um cronograma pronto — sem planilhas, sem planejamento manual.
+    </div>
+  </section>
+
+  <!-- 2. Público -->
+  <section class="section" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Público-Alvo</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-name">Concurseiros e vestibulandos</div>
+        <div class="feature-desc">Precisam distribuir muitos conteúdos em calendário fixo com data de prova.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-name">Estudantes de graduação</div>
+        <div class="feature-desc">Organizam provas, trabalhos e disciplinas com disponibilidade variável por semana.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-name">Profissionais em requalificação</div>
+        <div class="feature-desc">Estudam no tempo livre após o trabalho e precisam de metas realistas.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-name">Autodidatas</div>
+        <div class="feature-desc">Cursos online, leituras técnicas e projetos pessoais sem estrutura formal.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Funcionalidades -->
+  <section class="section" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Funcionalidades Principais</h2>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Cadastro de Conteúdos</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--accent-light)">📚</div>
+          <div class="feature-name">Gerenciar conteúdos</div>
+          <div class="feature-desc">Criar, editar e arquivar conteúdos com título, descrição, carga horária estimada e prioridade.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--green-light)">🏷️</div>
+          <div class="feature-name">Categorias e tags</div>
+          <div class="feature-desc">Agrupar conteúdos por matéria, tema ou projeto para filtragem e visualização.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--amber-light)">📅</div>
+          <div class="feature-name">Data-limite opcional</div>
+          <div class="feature-desc">Definir prazo para que o algoritmo priorize conteúdos com deadline mais próximo.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--purple-light)">⚡</div>
+          <div class="feature-name">Nível de prioridade</div>
+          <div class="feature-desc">Alta, média ou baixa — influencia o posicionamento no cronograma gerado.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Configuração da Agenda</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--accent-light)">🕐</div>
+          <div class="feature-name">Horas por dia</div>
+          <div class="feature-desc">Definir quantas horas o usuário pode estudar em cada dia da semana individualmente.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--green-light)">📆</div>
+          <div class="feature-name">Dias disponíveis</div>
+          <div class="feature-desc">Selecionar os dias da semana em que haverá sessões de estudo.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--amber-light)">🔄</div>
+          <div class="feature-name">Ciclos de revisão</div>
+          <div class="feature-desc">Configurar repetição espaçada para conteúdos já concluídos (opcional, V2).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Planejamento Automático</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--accent-light)">🗓️</div>
+          <div class="feature-name">Cronograma gerado</div>
+          <div class="feature-desc">Algoritmo distribui os conteúdos nos dias disponíveis respeitando horas e prioridades.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--green-light)">👁️</div>
+          <div class="feature-name">Visão diária / semanal</div>
+          <div class="feature-desc">Dashboard mostrando o que estudar hoje e a visão da semana completa.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--amber-light)">⚠️</div>
+          <div class="feature-name">Alertas de sobrecarga</div>
+          <div class="feature-desc">Aviso quando o total de horas cadastradas excede a capacidade disponível.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--purple-light)">🔁</div>
+          <div class="feature-name">Replanejamento</div>
+          <div class="feature-desc">Reagendar automaticamente itens não concluídos para os próximos dias.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Acompanhamento e Progresso</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--accent-light)">✅</div>
+          <div class="feature-name">Marcar como concluído</div>
+          <div class="feature-desc">Um clique para concluir uma sessão e acionar o crédito de pontos.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--green-light)">📊</div>
+          <div class="feature-name">Progresso por conteúdo</div>
+          <div class="feature-desc">Barra de progresso indicando quantas horas foram realizadas vs. planejadas.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--amber-light)">🔥</div>
+          <div class="feature-name">Sequência (streak)</div>
+          <div class="feature-desc">Contador de dias consecutivos de estudo para estimular a consistência.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:var(--red-light)">📈</div>
+          <div class="feature-name">Relatório semanal</div>
+          <div class="feature-desc">Horas estudadas, taxa de conclusão e evolução de pontuação por semana.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. User Stories -->
+  <section class="section" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Histórias de Usuário</h2>
+    </div>
+    <table class="stories-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Como...</th>
+          <th>Quero...</th>
+          <th>Para...</th>
+          <th>Prioridade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>US-01</td>
+          <td>usuário</td>
+          <td>cadastrar um conteúdo com título e horas estimadas</td>
+          <td>o sistema saber o que preciso estudar e quanto tempo levará</td>
+          <td><span class="badge badge-high">Alta</span></td>
+        </tr>
+        <tr>
+          <td>US-02</td>
+          <td>usuário</td>
+          <td>definir quais dias e quantas horas por dia posso estudar</td>
+          <td>o planejamento respeite minha rotina real</td>
+          <td><span class="badge badge-high">Alta</span></td>
+        </tr>
+        <tr>
+          <td>US-03</td>
+          <td>usuário</td>
+          <td>ver no dashboard o que devo estudar hoje</td>
+          <td>não precisar decidir toda manhã o que fazer</td>
+          <td><span class="badge badge-high">Alta</span></td>
+        </tr>
+        <tr>
+          <td>US-04</td>
+          <td>usuário</td>
+          <td>marcar uma sessão de estudo como concluída</td>
+          <td>receber pontos e atualizar meu progresso</td>
+          <td><span class="badge badge-high">Alta</span></td>
+        </tr>
+        <tr>
+          <td>US-05</td>
+          <td>usuário</td>
+          <td>ver minha pontuação, nível e conquistas</td>
+          <td>me sentir recompensado pelo esforço e manter a motivação</td>
+          <td><span class="badge badge-high">Alta</span></td>
+        </tr>
+        <tr>
+          <td>US-06</td>
+          <td>usuário</td>
+          <td>definir prioridade e prazo para um conteúdo</td>
+          <td>conteúdos urgentes aparecerem primeiro no cronograma</td>
+          <td><span class="badge badge-med">Média</span></td>
+        </tr>
+        <tr>
+          <td>US-07</td>
+          <td>usuário</td>
+          <td>reagendar automaticamente o que não consegui estudar</td>
+          <td>não perder o fio do planejamento por falhar um dia</td>
+          <td><span class="badge badge-med">Média</span></td>
+        </tr>
+        <tr>
+          <td>US-08</td>
+          <td>usuário</td>
+          <td>ver um relatório semanal do meu desempenho</td>
+          <td>entender minha consistência e ajustar o plano</td>
+          <td><span class="badge badge-med">Média</span></td>
+        </tr>
+        <tr>
+          <td>US-09</td>
+          <td>usuário</td>
+          <td>organizar conteúdos por categoria ou tag</td>
+          <td>filtrar facilmente por matéria ou projeto</td>
+          <td><span class="badge badge-low">Baixa</span></td>
+        </tr>
+        <tr>
+          <td>US-10</td>
+          <td>usuário</td>
+          <td>compartilhar minha pontuação ou conquistas</td>
+          <td>mostrar meu progresso para amigos ou redes sociais</td>
+          <td><span class="badge badge-low">Baixa</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5. Gamificação -->
+  <section class="section" id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Sistema de Gamificação</h2>
+    </div>
+    <p>A gamificação é o diferencial motivacional central do sistema. O usuário acumula XP (pontos de experiência) por ações de estudo e evolui por níveis nomeados, desbloqueando conquistas e mantendo streaks.</p>
+
+    <div class="xp-card">
+      <div class="xp-title">Tabela de XP — Ações que geram pontos</div>
+      <div class="xp-items">
+        <div class="xp-item"><span class="xp-action">Concluir sessão de estudo</span><span class="xp-points">+50 XP</span></div>
+        <div class="xp-item"><span class="xp-action">Concluir conteúdo completo</span><span class="xp-points">+200 XP</span></div>
+        <div class="xp-item"><span class="xp-action">Manter streak de 3 dias</span><span class="xp-points">+75 XP</span></div>
+        <div class="xp-item"><span class="xp-action">Manter streak de 7 dias</span><span class="xp-points">+300 XP</span></div>
+        <div class="xp-item"><span class="xp-action">Cadastrar conteúdo</span><span class="xp-points">+10 XP</span></div>
+        <div class="xp-item"><span class="xp-action">Cumprir meta semanal 100%</span><span class="xp-points">+500 XP</span></div>
+        <div class="xp-item"><span class="xp-action">Estudar antes do prazo</span><span class="xp-points">+100 XP</span></div>
+        <div class="xp-item"><span class="xp-action">Primeiro login do dia</span><span class="xp-points">+15 XP</span></div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Progressão de Níveis</div>
+      <table class="nfr-table">
+        <thead>
+          <tr><th>Nível</th><th>Nome</th><th>XP necessário</th><th>Benefício</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Iniciante</td><td>0 XP</td><td>Acesso básico</td></tr>
+          <tr><td>2</td><td>Estudante</td><td>500 XP</td><td>Themes extras</td></tr>
+          <tr><td>3</td><td>Dedicado</td><td>1.500 XP</td><td>Categorias ilimitadas</td></tr>
+          <tr><td>4</td><td>Focado</td><td>3.500 XP</td><td>Relatórios avançados</td></tr>
+          <tr><td>5</td><td>Expert</td><td>7.500 XP</td><td>Revisão espaçada automática</td></tr>
+          <tr><td>6</td><td>Mestre</td><td>15.000 XP</td><td>Badge exclusivo + destaque no perfil</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Conquistas (Achievements)</div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-name">🔥 Em Chamas</div>
+          <div class="feature-desc">7 dias consecutivos de estudo concluídos.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">📚 Devorador de Livros</div>
+          <div class="feature-desc">10 conteúdos completos concluídos.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">⏱️ Maratonista</div>
+          <div class="feature-desc">50 horas totais de estudo registradas.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">🎯 Pontual</div>
+          <div class="feature-desc">5 conteúdos concluídos antes do prazo.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">💯 Semana Perfeita</div>
+          <div class="feature-desc">Meta semanal 100% por 4 semanas seguidas.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-name">🌅 Madrugador</div>
+          <div class="feature-desc">Primeira sessão antes das 7h por 5 vezes.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Modelo de Dados -->
+  <section class="section" id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Modelo de Dados — Supabase</h2>
+    </div>
+    <p>Todas as tabelas são armazenadas no Supabase (PostgreSQL). O Row Level Security (RLS) garante que cada usuário acessa apenas seus próprios dados. A autenticação é gerenciada pelo Supabase Auth.</p>
+
+    <div class="schema-grid">
+      <div class="schema-table">
+        <div class="schema-table-header">users (via Supabase Auth)</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name">email</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">display_name</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">avatar_url</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">created_at</span><span class="field-type">timestamptz</span></div>
+      </div>
+
+      <div class="schema-table">
+        <div class="schema-table-header">subjects (conteúdos)</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">user_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">title</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">description</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">estimated_hours</span><span class="field-type">numeric</span></div>
+        <div class="schema-field"><span class="field-name">completed_hours</span><span class="field-type">numeric</span></div>
+        <div class="schema-field"><span class="field-name">priority</span><span class="field-type">enum (low/med/high)</span></div>
+        <div class="schema-field"><span class="field-name">deadline</span><span class="field-type">date</span></div>
+        <div class="schema-field"><span class="field-name">status</span><span class="field-type">enum (active/done/archived)</span></div>
+        <div class="schema-field"><span class="field-name">category_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">created_at</span><span class="field-type">timestamptz</span></div>
+      </div>
+
+      <div class="schema-table">
+        <div class="schema-table-header">categories</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">user_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">name</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">color</span><span class="field-type">text (hex)</span></div>
+      </div>
+
+      <div class="schema-table">
+        <div class="schema-table-header">study_schedule</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">user_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">day_of_week</span><span class="field-type">int (0–6)</span></div>
+        <div class="schema-field"><span class="field-name">available_hours</span><span class="field-type">numeric</span></div>
+        <div class="schema-field"><span class="field-name">is_active</span><span class="field-type">boolean</span></div>
+      </div>
+
+      <div class="schema-table">
+        <div class="schema-table-header">sessions (sessões)</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">user_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">subject_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">scheduled_date</span><span class="field-type">date</span></div>
+        <div class="schema-field"><span class="field-name">planned_hours</span><span class="field-type">numeric</span></div>
+        <div class="schema-field"><span class="field-name">actual_hours</span><span class="field-type">numeric</span></div>
+        <div class="schema-field"><span class="field-name">status</span><span class="field-type">enum (pending/done/skipped)</span></div>
+        <div class="schema-field"><span class="field-name">completed_at</span><span class="field-type">timestamptz</span></div>
+      </div>
+
+      <div class="schema-table">
+        <div class="schema-table-header">user_points</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">user_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">total_xp</span><span class="field-type">int</span></div>
+        <div class="schema-field"><span class="field-name">current_level</span><span class="field-type">int</span></div>
+        <div class="schema-field"><span class="field-name">streak_days</span><span class="field-type">int</span></div>
+        <div class="schema-field"><span class="field-name">last_study_date</span><span class="field-type">date</span></div>
+      </div>
+
+      <div class="schema-table">
+        <div class="schema-table-header">xp_transactions</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">user_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">amount</span><span class="field-type">int</span></div>
+        <div class="schema-field"><span class="field-name">reason</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">source_type</span><span class="field-type">text (enum)</span></div>
+        <div class="schema-field"><span class="field-name field-fk">source_id</span><span class="field-type">uuid (opcional)</span></div>
+        <div class="schema-field"><span class="field-name">created_at</span><span class="field-type">timestamptz</span></div>
+      </div>
+
+      <div class="schema-table">
+        <div class="schema-table-header">achievements</div>
+        <div class="schema-field"><span class="field-name field-pk">id</span><span class="field-type">uuid PK</span></div>
+        <div class="schema-field"><span class="field-name field-fk">user_id</span><span class="field-type">uuid FK</span></div>
+        <div class="schema-field"><span class="field-name">achievement_key</span><span class="field-type">text</span></div>
+        <div class="schema-field"><span class="field-name">unlocked_at</span><span class="field-type">timestamptz</span></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Segurança:</strong> Row Level Security habilitado em todas as tabelas. Policies garantem que <code>user_id = auth.uid()</code> para SELECT, INSERT, UPDATE e DELETE. Nenhum dado de um usuário é acessível por outro.
+    </div>
+  </section>
+
+  <!-- 7. Stack -->
+  <section class="section" id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Stack Tecnológica</h2>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <span class="stack-layer">Frontend</span>
+        <span class="stack-name">React + Vite</span>
+        <span class="stack-detail">SPA moderna com HMR e build otimizado</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Estilização</span>
+        <span class="stack-name">Tailwind CSS</span>
+        <span class="stack-detail">Utility-first com design system consistente</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Roteamento</span>
+        <span class="stack-name">React Router v6</span>
+        <span class="stack-detail">SPA routing com proteção de rotas</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Estado global</span>
+        <span class="stack-name">Zustand</span>
+        <span class="stack-detail">Gerenciamento leve de estado</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Backend / BaaS</span>
+        <span class="stack-name">Supabase</span>
+        <span class="stack-detail">Auth, PostgreSQL, Realtime, Storage</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Cliente DB</span>
+        <span class="stack-name">supabase-js v2</span>
+        <span class="stack-detail">SDK oficial com tipos TypeScript</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Tipagem</span>
+        <span class="stack-name">TypeScript</span>
+        <span class="stack-detail">Tipos gerados via Supabase CLI</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Data fetching</span>
+        <span class="stack-name">React Query (TanStack)</span>
+        <span class="stack-detail">Cache, sync e refetch automático</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Formulários</span>
+        <span class="stack-name">React Hook Form + Zod</span>
+        <span class="stack-detail">Validação type-safe</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Gráficos</span>
+        <span class="stack-name">Recharts</span>
+        <span class="stack-detail">Visualização de progresso e XP</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Deploy</span>
+        <span class="stack-name">Vercel</span>
+        <span class="stack-detail">Deploy contínuo com preview branches</span>
+      </div>
+      <div class="stack-item">
+        <span class="stack-layer">Linting</span>
+        <span class="stack-name">ESLint + Prettier</span>
+        <span class="stack-detail">Code quality automatizado</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. NFR -->
+  <section class="section" id="s8">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Requisitos Não Funcionais</h2>
+    </div>
+    <table class="nfr-table">
+      <thead>
+        <tr><th>Categoria</th><th>Requisito</th><th>Métrica</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Performance</td>
+          <td>Carregamento inicial da aplicação</td>
+          <td>LCP &lt; 2,5s em conexão 4G</td>
+        </tr>
+        <tr>
+          <td>Performance</td>
+          <td>Resposta de ações do usuário (salvar, marcar)</td>
+          <td>&lt; 300ms com feedback visual imediato</td>
+        </tr>
+        <tr>
+          <td>Responsividade</td>
+          <td>Compatibilidade com dispositivos móveis</td>
+          <td>Funcional em telas ≥ 360px de largura</td>
+        </tr>
+        <tr>
+          <td>Acessibilidade</td>
+          <td>Conformidade com padrões</td>
+          <td>WCAG 2.1 nível AA</td>
+        </tr>
+        <tr>
+          <td>Segurança</td>
+          <td>Isolamento de dados por usuário</td>
+          <td>RLS ativo em 100% das tabelas</td>
+        </tr>
+        <tr>
+          <td>Segurança</td>
+          <td>Autenticação</td>
+          <td>JWT via Supabase Auth; tokens expiram em 1h</td>
+        </tr>
+        <tr>
+          <td>Disponibilidade</td>
+          <td>Uptime do serviço</td>
+          <td>SLA Supabase: 99,9%</td>
+        </tr>
+        <tr>
+          <td>Escalabilidade</td>
+          <td>Suporte inicial de usuários</td>
+          <td>Plano gratuito Supabase: até 50.000 linhas / 500MB</td>
+        </tr>
+        <tr>
+          <td>Usabilidade</td>
+          <td>Onboarding sem documentação</td>
+          <td>Usuário conclui cadastro do primeiro conteúdo em &lt; 3 min</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 9. Fluxos -->
+  <section class="section" id="s9">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <h2 class="section-title">Fluxos Principais</h2>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Fluxo 1 — Onboarding</div>
+      <p style="color:var(--ink3);font-size:13.5px;">Cadastro → Configurar dias/horas disponíveis → Cadastrar primeiro conteúdo → Ver cronograma gerado → Confirmar e começar</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Fluxo 2 — Uso diário</div>
+      <p style="color:var(--ink3);font-size:13.5px;">Login → Dashboard "O que estudar hoje" → Iniciar sessão → Estudar → Marcar como concluído → Receber XP e feedback → Ver streak atualizado</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Fluxo 3 — Replanejamento</div>
+      <p style="color:var(--ink3);font-size:13.5px;">Sessão marcada como "pulada" → Sistema detecta pendência → Reinsere nos próximos dias disponíveis → Notificação de atualização no cronograma</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Fluxo 4 — Conteúdo concluído</div>
+      <p style="color:var(--ink3);font-size:13.5px;">Última sessão do conteúdo marcada → Status muda para "Concluído" → +200 XP creditados → Conquista desbloqueada se aplicável → Conteúdo arquivado automaticamente</p>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Algoritmo de distribuição de conteúdo</div>
+      <p style="color:var(--ink3);font-size:13.5px;margin-bottom:8px;">O algoritmo de geração do cronograma segue esta lógica de priorização:</p>
+      <table class="nfr-table" style="font-size:12.5px;">
+        <thead><tr><th>Ordem</th><th>Critério</th><th>Regra</th></tr></thead>
+        <tbody>
+          <tr><td>1°</td><td>Prazo</td><td>Conteúdos com deadline mais próximo entram primeiro</td></tr>
+          <tr><td>2°</td><td>Prioridade</td><td>Alta &gt; Média &gt; Baixa dentro do mesmo prazo</td></tr>
+          <tr><td>3°</td><td>Horas restantes</td><td>Distribui em blocos que cabem nas horas disponíveis do dia</td></tr>
+          <tr><td>4°</td><td>Variedade</td><td>Evita repetir o mesmo conteúdo em dias consecutivos (configurável)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 10. Roadmap -->
+  <section class="section" id="s10">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <h2 class="section-title">Roadmap de Desenvolvimento</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-phase">
+          <span class="phase-label">Fase 1</span>
+          <span class="phase-duration">2 semanas</span>
+        </div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">MVP — Fundação</div>
+          <div class="timeline-tasks">Setup Supabase + Auth · CRUD de conteúdos · Configuração de agenda semanal · Algoritmo básico de distribuição · Dashboard "hoje" · Marcar sessão como concluída · XP básico</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-phase">
+          <span class="phase-label">Fase 2</span>
+          <span class="phase-duration">2 semanas</span>
+        </div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Gamificação e Progresso</div>
+          <div class="timeline-tasks">Sistema completo de XP e níveis · Conquistas (achievements) · Streak tracking · Barra de progresso por conteúdo · Visão semanal do cronograma · Replanejamento automático</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-phase">
+          <span class="phase-label">Fase 3</span>
+          <span class="phase-duration">1 semana</span>
+        </div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">Relatórios e Refinamento</div>
+          <div class="timeline-tasks">Relatório semanal com gráficos · Categorias e tags · Filtros · UX polish · Responsividade mobile · Testes de usabilidade</div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-phase">
+          <span class="phase-label">Fase 4</span>
+          <span class="phase-duration">Futuro</span>
+        </div>
+        <div class="timeline-dot" style="background:var(--ink3)"></div>
+        <div class="timeline-content">
+          <div class="timeline-title">V2 — Funcionalidades Avançadas</div>
+          <div class="timeline-tasks">Revisão espaçada (algoritmo SM-2) · Notificações push / e-mail · Modo colaborativo (grupos de estudo) · Integração com Google Calendar · App mobile (PWA)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Riscos -->
+  <section class="section" id="s11">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <h2 class="section-title">Riscos e Mitigações</h2>
+    </div>
+    <div class="risk-grid">
+      <div class="risk-item">
+        <div>
+          <div class="risk-title">Estimativa de horas imprecisa pelo usuário</div>
+          <div class="risk-mitigation">Mitigação: sugerir estimativas baseadas em médias históricas; permitir edição a qualquer momento; replanejamento automático absorve desvios.</div>
+        </div>
+        <span class="badge badge-high">Alto</span>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-title">Abandono por sobrecarga percebida</div>
+          <div class="risk-mitigation">Mitigação: alertar quando horas cadastradas excedem capacidade; replanejamento gentil sem punição; gamificação reforça comportamento positivo.</div>
+        </div>
+        <span class="badge badge-high">Alto</span>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-title">Limite do plano gratuito Supabase</div>
+          <div class="risk-mitigation">Mitigação: monitorar crescimento; arquivar sessões antigas; planejar migração para plano pago ao atingir 70% do limite.</div>
+        </div>
+        <span class="badge badge-med">Médio</span>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-title">Complexidade do algoritmo de distribuição</div>
+          <div class="risk-mitigation">Mitigação: começar com abordagem gulosa (greedy) simples; refinar baseado em feedback real de usuários antes de otimizar.</div>
+        </div>
+        <span class="badge badge-med">Médio</span>
+      </div>
+      <div class="risk-item">
+        <div>
+          <div class="risk-title">Gamificação sentida como superficial</div>
+          <div class="risk-mitigation">Mitigação: testar com usuários reais na Fase 2; ajustar balanceamento de XP baseado em feedback; conquistas devem refletir marcos reais.</div>
+        </div>
+        <span class="badge badge-low">Baixo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Critérios de aceite -->
+  <section class="section" id="s12">
+    <div class="section-header">
+      <span class="section-num">12</span>
+      <h2 class="section-title">Critérios de Aceite do MVP</h2>
+    </div>
+    <table class="nfr-table">
+      <thead>
+        <tr><th>Funcionalidade</th><th>Critério de aceite</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Autenticação</td><td>Usuário consegue criar conta, fazer login e logout via Supabase Auth</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+        <tr><td>Cadastro de conteúdo</td><td>Criar, editar e excluir conteúdo com todos os campos obrigatórios validados</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+        <tr><td>Configuração de agenda</td><td>Salvar dias e horas disponíveis por dia da semana com persistência no banco</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+        <tr><td>Cronograma automático</td><td>Ao acessar o dashboard, o usuário vê o que deve estudar hoje ordenado por prioridade</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+        <tr><td>Conclusão de sessão</td><td>Marcar sessão como concluída atualiza horas e aciona crédito de XP imediatamente</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+        <tr><td>Pontuação</td><td>XP, nível e streak são exibidos no perfil e atualizados em tempo real após ação</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+        <tr><td>Segurança de dados</td><td>Nenhum usuário consegue ver ou modificar dados de outro usuário</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+        <tr><td>Mobile</td><td>Interface utilizável em smartphone sem elementos quebrados</td><td><span class="badge badge-blue">A implementar</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr>
+
+  <footer class="doc-footer">
+    <span>StudyFlow — PRD v1.0</span>
+    <span>Gerado em Abril 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
