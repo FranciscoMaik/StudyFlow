@@ -1,20 +1,63 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #6366f1; /* Indigo */
-  --color-primary-light: #818cf8;
-  --color-accent: #f59e0b; /* Amber */
-  --color-success: #10b981; /* Emerald */
-  --color-danger: #ef4444; /* Red */
+  --color-primary: #3498DB;
+  --color-success: #27AE60;
+  --color-danger: #F39C12;
   
+  /* Override default Tailwind colors to match the exact requirement */
+  
+  /* Contraste texto/fundo: #2C3E50 sobre #F8F9FA */
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #f1f3f5;
+  --color-gray-800: #2C3E50;
+  --color-gray-900: #1a252f;
+  
+  --color-slate-50: #F8F9FA;
+  --color-slate-100: #f1f3f5;
+  --color-slate-500: #7b8a97;
+  --color-slate-600: #5c6c7b;
+  --color-slate-800: #2C3E50;
+  --color-slate-900: #1a252f;
+  
+  /* Botões primários: #3498DB */
+  --color-indigo-50: #ebf5fb;
+  --color-indigo-100: #d6eaf8;
+  --color-indigo-200: #aed6f1;
+  --color-indigo-500: #3498DB;
+  --color-indigo-600: #2980b9;
+  --color-indigo-700: #1f618d;
+
+  /* Feedback positivo: #27AE60 */
+  --color-emerald-50: #e9f7ef;
+  --color-emerald-100: #d4efdf;
+  --color-emerald-200: #a9dfbf;
+  --color-emerald-500: #27AE60;
+  --color-emerald-600: #229954;
+  --color-emerald-700: #1e8449;
+
+  /* Alertas: #F39C12 */
+  --color-amber-50: #fef5e7;
+  --color-amber-100: #fdebd0;
+  --color-amber-200: #fad7a1;
+  --color-amber-500: #F39C12;
+  --color-amber-600: #d68910;
+  --color-amber-700: #b9770e;
+
+  /* Additional mappings for rose if needed */
+  --color-rose-50: #fdedec;
+  --color-rose-100: #fadbd8;
+  --color-rose-600: #e74c3c;
+  --color-rose-700: #c0392b;
+
   --font-sans: 'Outfit', sans-serif;
 }
 
 @layer base {
   body {
     font-family: var(--font-sans);
-    background-color: #f8fafc;
-    color: #0f172a;
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-800);
   }
 }
 
