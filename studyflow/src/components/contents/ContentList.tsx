@@ -1,9 +1,13 @@
+import { Filter, SortAsc } from "lucide-react";
 import { useState } from "react";
 import { useCategories } from "../../hooks/useCategories";
-import { useArchiveContent, useContents } from "../../hooks/useContents";
+import {
+	useArchiveContent,
+	useContents,
+	useMarkContentDone,
+} from "../../hooks/useContents";
 import type { Content } from "../../types";
 import { ContentCard } from "./ContentCard";
-import { Filter, SortAsc } from "lucide-react";
 
 interface ContentListProps {
 	weeklyCapacityHours?: number;
@@ -22,6 +26,7 @@ export function ContentList({ weeklyCapacityHours, onEdit }: ContentListProps) {
 	const { data: categories = [], isLoading: categoriesLoading } =
 		useCategories();
 	const archiveMutation = useArchiveContent();
+	const doneMutation = useMarkContentDone();
 
 	const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c]));
 
@@ -72,8 +77,10 @@ export function ContentList({ weeklyCapacityHours, onEdit }: ContentListProps) {
 					</span>
 					<span>
 						<strong>Atenção à sobrecarga:</strong> Você tem{" "}
-						<strong>{totalEstimatedHours}h</strong> estimadas de estudos na fila, o que ultrapassa a sua
-						capacidade semanal em <strong>{overloadHours.toFixed(1)}h</strong>. Considere focar nas prioridades maiores!
+						<strong>{totalEstimatedHours}h</strong> estimadas de estudos na
+						fila, o que ultrapassa a sua capacidade semanal em{" "}
+						<strong>{overloadHours.toFixed(1)}h</strong>. Considere focar nas
+						prioridades maiores!
 					</span>
 				</div>
 			)}
@@ -116,11 +123,18 @@ export function ContentList({ weeklyCapacityHours, onEdit }: ContentListProps) {
 					<div className="text-4xl mb-4">📭</div>
 					{contents.length === 0 ? (
 						<>
-							<h3 className="text-lg font-bold text-gray-700">Seu catálogo está vazio</h3>
-							<p className="text-gray-500 mt-1 max-w-sm">Adicione os conteúdos e matérias que você precisa estudar para criarmos a sua trilha.</p>
+							<h3 className="text-lg font-bold text-gray-700">
+								Seu catálogo está vazio
+							</h3>
+							<p className="text-gray-500 mt-1 max-w-sm">
+								Adicione os conteúdos e matérias que você precisa estudar para
+								criarmos a sua trilha.
+							</p>
 						</>
 					) : (
-						<p className="text-gray-500">Nenhum módulo encontrado com esse filtro.</p>
+						<p className="text-gray-500">
+							Nenhum módulo encontrado com esse filtro.
+						</p>
 					)}
 				</div>
 			) : (
@@ -134,6 +148,7 @@ export function ContentList({ weeklyCapacityHours, onEdit }: ContentListProps) {
 							}
 							onEdit={onEdit}
 							onArchive={(id) => archiveMutation.mutate(id)}
+							onDone={(id) => doneMutation.mutate(id)}
 						/>
 					))}
 				</div>

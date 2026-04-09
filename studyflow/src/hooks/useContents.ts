@@ -264,6 +264,83 @@ export function useArchiveContent() {
 			queryClient.invalidateQueries({ queryKey: ["contents"] });
 			queryClient.invalidateQueries({ queryKey: ["contents", id] });
 			queryClient.invalidateQueries({ queryKey: ["sessions"] });
+			queryClient.invalidateQueries({ queryKey: ["sessions", "today"] });
+			queryClient.invalidateQueries({ queryKey: ["sessions", "week"] });
 		},
+	});
+}
+
+export function useMarkContentDone() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (id: string) => {
+			// Set content status to done
+			const { error: doneError } = await supabase
+				.from("contents")
+				.update({ status: "done" })
+				.eq("id", id);
+
+			if (doneError) throw doneError;
+
+			// Delete future pending sessions for this content (same pattern as useArchiveContent)
+			const today = new Date().toISOString().split("T")[0];
+			const { error: sessionsError } = await supabase
+				.from("sessions")
+				.delete()
+				.eq("content_id", id)
+				.eq("status", "pending")
+				.gt("scheduled_date", today);
+
+			if (sessionsError) throw sessionsError;
+		},
+		onSuccess: (_data, id) => {
+			queryClient.invalidateQueries({ queryKey: ["contents"] });
+			queryClient.invalidateQueries({ queryKey: ["contents", id] });
+			queryClient.invalidateQueries({ queryKey: ["sessions"] });
+			queryClient.invalidateQueries({ queryKey: ["sessions", "today"] });
+			queryClient.invalidateQueries({ queryKey: ["sessions", "week"] });
+		},
+	});
+}
+
+export function useReopenContent() {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: async (id: string) => {
+			const { error } = await supabase
+				.from("contents")
+				.update({ status: "active" })
+				.eq("id", id);
+
+			if (error) throw error;
+		},
+		onSuccess: (_data, id) => {
+			queryClient.invalidateQueries({ queryKey: ["contents"] });
+			queryClient.invalidateQueries({ queryKey: ["contents", id] });
+			queryClient.invalidateQueries({ queryKey: ["contents-done"] });
+		},
+	});
+}
+
+export function useDoneContents() {
+	const { user } = useAuthStore();
+
+	return useQuery({
+		queryKey: ["contents-done"],
+		queryFn: async () => {
+			const { data, error } = await supabase
+				.from("contents")
+				.select("*")
+				.eq("user_id", user!.id)
+				.in("status", ["done", "archived"])
+				.order("created_at", { ascending: false });
+
+			if (error) throw error;
+
+			return (data ?? []).map(mapContent);
+		},
+		enabled: !!user,
 	});
 }

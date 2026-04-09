@@ -1,12 +1,24 @@
-import type { Category, Content } from "../../types";
 import { motion } from "framer-motion";
-import { Calendar, Edit, Archive, BookOpen, ArrowDown, Minus, ArrowUp } from "lucide-react";
+import {
+	Archive,
+	ArrowDown,
+	ArrowUp,
+	BookOpen,
+	Calendar,
+	CheckCircle,
+	Edit,
+	Minus,
+} from "lucide-react";
+import { useState } from "react";
+import type { Category, Content } from "../../types";
+import { ConfirmDialog } from "../ui/ConfirmDialog";
 
 interface ContentCardProps {
 	content: Content;
 	category?: Category;
 	onEdit?: (content: Content) => void;
 	onArchive?: (id: string) => void;
+	onDone?: (id: string) => void;
 }
 
 const PRIORITY_LABELS: Record<Content["priority"], string> = {
@@ -32,7 +44,9 @@ export function ContentCard({
 	category,
 	onEdit,
 	onArchive,
+	onDone,
 }: ContentCardProps) {
+	const [showDoneDialog, setShowDoneDialog] = useState(false);
 	const progressPercent =
 		content.estimatedHours > 0
 			? Math.min(
@@ -45,11 +59,15 @@ export function ContentCard({
 		? new Date(content.deadline + "T00:00:00").toLocaleDateString("pt-BR")
 		: null;
 
-    const PriorityIcon = PRIORITY_ICONS[content.priority];
+	const PriorityIcon = PRIORITY_ICONS[content.priority];
 
 	return (
-		<motion.div 
-			whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }}
+		<motion.div
+			whileHover={{
+				y: -4,
+				boxShadow:
+					"0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+			}}
 			className="bg-white rounded-2xl border-2 border-gray-100 p-5 transition-all flex flex-col justify-between min-w-0 overflow-hidden w-full"
 		>
 			<div>
@@ -59,7 +77,10 @@ export function ContentCard({
 							<BookOpen className="w-5 h-5" />
 						</div>
 						<div className="flex-1 min-w-0">
-							<h3 className="font-bold text-gray-800 truncate text-lg leading-tight" title={content.title}>
+							<h3
+								className="font-bold text-gray-800 truncate text-lg leading-tight"
+								title={content.title}
+							>
 								{content.title}
 							</h3>
 							{category && (
@@ -102,7 +123,13 @@ export function ContentCard({
 							viewport={{ once: true }}
 							className="bg-gradient-to-r from-indigo-400 to-indigo-600 h-2.5 rounded-full relative"
 						>
-							<div className="absolute inset-0 bg-white/20" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)' }}></div>
+							<div
+								className="absolute inset-0 bg-white/20"
+								style={{
+									backgroundImage:
+										"repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)",
+								}}
+							></div>
 						</motion.div>
 					</div>
 				</div>
@@ -113,7 +140,7 @@ export function ContentCard({
 					<span
 						className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 flex items-center gap-1 rounded-md ${PRIORITY_COLORS[content.priority]}`}
 					>
-                        <PriorityIcon className="w-3 h-3" />
+						<PriorityIcon className="w-3 h-3" />
 						{PRIORITY_LABELS[content.priority]}
 					</span>
 					{formattedDeadline && (
@@ -124,6 +151,16 @@ export function ContentCard({
 					)}
 				</div>
 				<div className="flex gap-1.5">
+					{onDone && (
+						<button
+							type="button"
+							onClick={() => setShowDoneDialog(true)}
+							className="p-1.5 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+							aria-label="Feito"
+						>
+							<CheckCircle className="w-4 h-4" />
+						</button>
+					)}
 					{onEdit && (
 						<button
 							type="button"
@@ -146,6 +183,17 @@ export function ContentCard({
 					)}
 				</div>
 			</div>
+			<ConfirmDialog
+				open={showDoneDialog}
+				title="Marcar como concluído?"
+				description="Tem certeza que deseja marcar esta atividade como concluída? Ela será movida para a seção de concluídos."
+				confirmLabel="Marcar como feito"
+				onConfirm={() => {
+					onDone?.(content.id);
+					setShowDoneDialog(false);
+				}}
+				onCancel={() => setShowDoneDialog(false)}
+			/>
 		</motion.div>
 	);
 }

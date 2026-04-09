@@ -68,7 +68,8 @@ export function useTodaySessions() {
 		queryFn: async () => {
 			const { data, error } = await supabase
 				.from("sessions")
-				.select("*")
+				.select("*, contents!inner(status)")
+				.eq("contents.status", "active")
 				.eq("user_id", user!.id)
 				.eq("scheduled_date", today)
 				.order("planned_hours", { ascending: false });
@@ -91,7 +92,8 @@ export function useWeeklySessions() {
 		queryFn: async () => {
 			const { data, error } = await supabase
 				.from("sessions")
-				.select("*")
+				.select("*, contents!inner(status)")
+				.eq("contents.status", "active")
 				.eq("user_id", user!.id)
 				.gte("scheduled_date", start)
 				.lte("scheduled_date", end)
