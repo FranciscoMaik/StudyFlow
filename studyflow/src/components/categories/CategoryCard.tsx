@@ -22,7 +22,7 @@ export function CategoryCard({
 				boxShadow:
 					"0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)",
 			}}
-			className="bg-white rounded-2xl border-2 border-gray-100 p-5 flex flex-wrap items-center justify-between gap-4 transition-all"
+			className="bg-white rounded-2xl border-2 border-gray-100 p-5 flex flex-wrap items-center justify-between gap-4 transition-all min-w-0 overflow-hidden w-full"
 		>
 			<div className="flex items-center gap-4 min-w-0">
 				<span

@@ -1,6 +1,6 @@
 import type { Category, Content } from "../../types";
 import { motion } from "framer-motion";
-import { Calendar, Edit, Archive, BookOpen } from "lucide-react";
+import { Calendar, Edit, Archive, BookOpen, ArrowDown, Minus, ArrowUp } from "lucide-react";
 
 interface ContentCardProps {
 	content: Content;
@@ -15,10 +15,16 @@ const PRIORITY_LABELS: Record<Content["priority"], string> = {
 	high: "Alta Prio.",
 };
 
+const PRIORITY_ICONS: Record<Content["priority"], React.ElementType> = {
+	low: ArrowDown,
+	medium: Minus,
+	high: ArrowUp,
+};
+
 const PRIORITY_COLORS: Record<Content["priority"], string> = {
-	low: "text-emerald-700 bg-emerald-100",
-	medium: "text-amber-700 bg-amber-100",
-	high: "text-rose-700 bg-rose-100",
+	low: "text-emerald-700 bg-emerald-100 border border-emerald-200",
+	medium: "text-amber-700 bg-amber-100 border border-amber-200",
+	high: "text-rose-700 bg-rose-100 border border-rose-200",
 };
 
 export function ContentCard({
@@ -39,10 +45,12 @@ export function ContentCard({
 		? new Date(content.deadline + "T00:00:00").toLocaleDateString("pt-BR")
 		: null;
 
+    const PriorityIcon = PRIORITY_ICONS[content.priority];
+
 	return (
 		<motion.div 
 			whileHover={{ y: -4, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)" }}
-			className="bg-white rounded-2xl border-2 border-gray-100 p-5 transition-all flex flex-col justify-between"
+			className="bg-white rounded-2xl border-2 border-gray-100 p-5 transition-all flex flex-col justify-between min-w-0 overflow-hidden w-full"
 		>
 			<div>
 				<div className="flex items-start justify-between gap-2 mb-3">
@@ -81,7 +89,7 @@ export function ContentCard({
 						</span>
 					</div>
 					<div
-						className="w-full bg-gray-100 shadow-inner rounded-full h-2.5"
+						className="w-full bg-slate-100 shadow-inner rounded-full h-2.5"
 						role="progressbar"
 						aria-valuenow={progressPercent}
 						aria-valuemin={0}
@@ -92,7 +100,7 @@ export function ContentCard({
 							initial={{ width: 0 }}
 							whileInView={{ width: `${progressPercent}%` }}
 							viewport={{ once: true }}
-							className="bg-gradient-to-r from-blue-500 to-indigo-500 h-2.5 rounded-full relative"
+							className="bg-gradient-to-r from-indigo-400 to-indigo-600 h-2.5 rounded-full relative"
 						>
 							<div className="absolute inset-0 bg-white/20" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)' }}></div>
 						</motion.div>
@@ -103,12 +111,13 @@ export function ContentCard({
 			<div className="mt-5 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
 				<div className="flex flex-wrap items-center gap-2">
 					<span
-						className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md ${PRIORITY_COLORS[content.priority]}`}
+						className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 flex items-center gap-1 rounded-md ${PRIORITY_COLORS[content.priority]}`}
 					>
+                        <PriorityIcon className="w-3 h-3" />
 						{PRIORITY_LABELS[content.priority]}
 					</span>
 					{formattedDeadline && (
-						<span className="text-[11px] font-semibold text-rose-600 bg-rose-50 px-2 py-1 rounded-md flex items-center gap-1">
+						<span className="text-[11px] font-semibold text-rose-600 bg-rose-50 border border-rose-100 px-2 py-1 rounded-md flex items-center gap-1">
 							<Calendar className="w-3 h-3" />
 							{formattedDeadline}
 						</span>
