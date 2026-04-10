@@ -1,5 +1,6 @@
 import { Archive, Library, Plus, RotateCcw } from "lucide-react";
 import { useState } from "react";
+import { CalendarView } from "../components/contents/CalendarView";
 import { ContentCard } from "../components/contents/ContentCard";
 import { ContentForm } from "../components/contents/ContentForm";
 import { ContentList } from "../components/contents/ContentList";
@@ -68,6 +69,10 @@ export function Contents() {
 					<ContentForm content={editingContent} onSuccess={handleClose} />
 				</div>
 			)}
+
+			<CalendarView />
+
+			<hr className="border-gray-100" />
 
 			<ContentList onEdit={handleEdit} />
 

@@ -14,7 +14,7 @@ const ACHIEVEMENT_NAMES: Record<AchievementKey, string> = {
 	madrugador: "Madrugador",
 };
 
-function mapSession(row: Record<string, unknown>): Session {
+export function mapSession(row: Record<string, unknown>): Session {
 	return {
 		id: row.id as string,
 		userId: row.user_id as string,
