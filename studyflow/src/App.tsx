@@ -12,7 +12,6 @@ import { NavBar } from "./components/ui/NavBar";
 import { Toast } from "./components/ui/Toast";
 import { Categories } from "./pages/Categories";
 import { Contents } from "./pages/Contents";
-import { Dashboard } from "./pages/Dashboard";
 import { Profile } from "./pages/Profile";
 import { Reports } from "./pages/Reports";
 import { Schedule } from "./pages/Schedule";
@@ -39,9 +38,8 @@ function App() {
 				{/* Protected routes — wrapped with NavBar */}
 				<Route element={<ProtectedRoute />}>
 					<Route element={<AppLayout />}>
-						<Route path="/" element={<Dashboard />} />
+						<Route path="/" element={<Contents />} />
 						<Route path="/categories" element={<Categories />} />
-						<Route path="/contents" element={<Contents />} />
 						<Route path="/schedule" element={<Schedule />} />
 						<Route path="/profile" element={<Profile />} />
 						<Route path="/reports" element={<Reports />} />

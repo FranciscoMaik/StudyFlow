@@ -4,8 +4,7 @@ import { useState } from "react";
 import { Menu, X, LogOut } from "lucide-react";
 
 const NAV_LINKS: { to: string; label: string; end?: boolean }[] = [
-	{ to: "/", label: "Dashboard", end: true },
-	{ to: "/contents", label: "Conteúdos" },
+	{ to: "/", label: "Conteúdos", end: true },
 	{ to: "/categories", label: "Categorias" },
 	{ to: "/schedule", label: "Agenda" },
 	{ to: "/profile", label: "Perfil" },
