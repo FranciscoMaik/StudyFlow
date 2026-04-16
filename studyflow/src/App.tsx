@@ -16,13 +16,12 @@ import { Profile } from "./pages/Profile";
 import { Reports } from "./pages/Reports";
 import { Schedule } from "./pages/Schedule";
 
-/** Layout wrapper that renders the NavBar above all protected pages */
+/** Layout wrapper that renders the NavBar as a sidebar and wraps all protected pages */
 function AppLayout() {
 	return (
-		<>
-			<NavBar />
+		<NavBar>
 			<Outlet />
-		</>
+		</NavBar>
 	);
 }
 

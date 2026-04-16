@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useContents } from "../../hooks/useContents";
+import { useContents, useDoneContents } from "../../hooks/useContents";
 import { useMonthSessions } from "../../hooks/useMonthSessions";
 import {
 	getSessionsForDate,
@@ -26,13 +26,29 @@ export function CalendarView() {
 		isLoading,
 		isError,
 	} = useMonthSessions(year, month);
-	const { data: contents = [] } = useContents();
+	const { data: activeContents = [] } = useContents();
+	const { data: doneContents = [] } = useDoneContents();
+
+	const contents = [...activeContents, ...doneContents];
 
 	const contentTitles: Record<string, string> = Object.fromEntries(
 		contents.map((c) => [c.id, c.title]),
 	);
 
-	const sessionsByDate = groupSessionsByDate(sessions);
+	// Modify sessions to show as done if the actual content is done/archived
+	const displaySessions = sessions.map((session) => {
+		const content = contents.find((c) => c.id === session.contentId);
+		if (
+			content &&
+			(content.status === "done" || content.status === "archived") &&
+			session.status === "pending"
+		) {
+			return { ...session, status: "done" as const };
+		}
+		return session;
+	});
+
+	const sessionsByDate = groupSessionsByDate(displaySessions);
 
 	function handleDayClick(dateStr: string) {
 		const daySessions = sessionsByDate[dateStr] ?? [];
@@ -60,7 +76,7 @@ export function CalendarView() {
 	}
 
 	const selectedDaySessions = selectedDay
-		? getSessionsForDate(selectedDay, sessions)
+		? getSessionsForDate(selectedDay, displaySessions)
 		: [];
 
 	return (

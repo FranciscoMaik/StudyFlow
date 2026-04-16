@@ -21,11 +21,17 @@ export function CalendarDay({
 	const baseClasses =
 		"relative flex flex-col items-center justify-center h-10 w-10 mx-auto rounded-full cursor-pointer select-none text-sm font-medium transition-colors";
 
+	const isAllDone = indicatorType === "done";
+
 	const stateClasses = isSelected
-		? "bg-indigo-600 text-white"
-		: isToday
-			? "ring-2 ring-indigo-500 text-indigo-700 font-bold"
-			: "text-gray-700 hover:bg-gray-100";
+		? "bg-indigo-600 text-white shadow-sm"
+		: isAllDone
+			? isToday
+				? "bg-emerald-100 ring-2 ring-emerald-500 text-emerald-800 font-bold"
+				: "bg-emerald-100 text-emerald-800 font-medium hover:bg-emerald-200"
+			: isToday
+				? "ring-2 ring-indigo-500 text-indigo-700 font-bold"
+				: "text-gray-700 hover:bg-gray-100";
 
 	const dotColor =
 		indicatorType === "done"
@@ -43,7 +49,7 @@ export function CalendarDay({
 			aria-pressed={isSelected}
 		>
 			<span>{day}</span>
-			{dotColor && (
+			{dotColor && !isAllDone && (
 				<span
 					className={`absolute bottom-1 h-1.5 w-1.5 rounded-full ${dotColor}`}
 				/>

@@ -22,6 +22,7 @@ export function Contents() {
 	const [showForm, setShowForm] = useState(false);
 	const [editingContent, setEditingContent] = useState<Content | undefined>();
 	const [activeTab, setActiveTab] = useState<Tab>("hoje");
+	const [showArchived, setShowArchived] = useState(false);
 
 	const { data: doneContents = [] } = useDoneContents();
 	const reopenMutation = useReopenContent();
@@ -238,18 +239,32 @@ export function Contents() {
 			/>
 
 			<section className="space-y-4">
-				<div className="flex items-center gap-3 border-b border-gray-100 pb-4">
-					<div className="bg-slate-50 p-3 rounded-2xl">
-						<Archive className="w-6 h-6 text-slate-500" />
+				<div className="flex items-center justify-between border-b border-gray-100 pb-4">
+					<div className="flex items-center gap-3">
+						<div className="bg-slate-50 p-3 rounded-2xl">
+							<Archive className="w-6 h-6 text-slate-500" />
+						</div>
+						<div>
+							<h2 className="text-xl font-bold text-slate-700 flex items-center gap-2">
+								Concluídos & Arquivados
+								<span className="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-0.5 rounded-full">
+									{doneContents.length}
+								</span>
+							</h2>
+							<p className="text-sm font-medium text-slate-400">
+								Módulos finalizados ou arquivados
+							</p>
+						</div>
 					</div>
-					<div>
-						<h2 className="text-xl font-bold text-slate-700">
-							Concluídos & Arquivados
-						</h2>
-						<p className="text-sm font-medium text-slate-400">
-							Módulos finalizados ou arquivados
-						</p>
-					</div>
+					{doneContents.length > 0 && (
+						<button
+							type="button"
+							onClick={() => setShowArchived(!showArchived)}
+							className="text-sm font-bold text-slate-600 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 px-4 py-2 rounded-xl transition-colors"
+						>
+							{showArchived ? "Ocultar itens" : "Mostrar itens"}
+						</button>
+					)}
 				</div>
 
 				{doneContents.length === 0 ? (
@@ -262,7 +277,7 @@ export function Contents() {
 							Módulos marcados como feitos ou arquivados aparecerão aqui.
 						</p>
 					</div>
-				) : (
+				) : showArchived ? (
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
 						{doneContents.map((content) => (
 							<div key={content.id} className="flex flex-col gap-2">
@@ -279,7 +294,7 @@ export function Contents() {
 							</div>
 						))}
 					</div>
-				)}
+				) : null}
 			</section>
 		</main>
 	);
