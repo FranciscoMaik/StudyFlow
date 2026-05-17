@@ -87,6 +87,26 @@ export interface PlannerOutput {
 	sessions: Omit<Session, "id" | "userId">[];
 }
 
+export interface Project {
+	id: string;
+	slug: string;
+	name: string;
+	icon: string;
+	sortOrder: number;
+}
+
+export interface Movie {
+	id: string;
+	userId: string;
+	title: string;
+	description?: string;
+	genre?: string;
+	releaseYear?: number;
+	rating?: number;
+	status: "want_to_watch" | "watched";
+	createdAt: string;
+}
+
 export interface AchievementCheckContext {
 	userId: string;
 	currentStreak: number;
